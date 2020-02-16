@@ -20,6 +20,21 @@ public class scanner {
         Scanner input = new Scanner(f);
         while (input.hasNext()) {
             String line = input.nextLine();
+
+            //check for multi-line comments
+             if( (line.charAt(0)=='/' && line.charAt(1)=='*') && (line.charAt(line.length()-2)!='*' && line.charAt(line.length()-1)!='/')){
+                System.out.println("Comment at line "+ lineNum );
+                 while (true){
+                     lineNum++;
+                     String Comment = input.nextLine();
+                     System.out.println("Comment line at line "+ lineNum );
+                             if (Comment.length() > 2  && Comment.charAt(Comment.length()-2)=='*' && Comment.charAt(Comment.length()-1)=='/'){
+                                 break;
+                             }
+                }
+
+             }
+
             //System.out.println(line);
             processLine(line, lineNum, 0);
             lineNum++;
