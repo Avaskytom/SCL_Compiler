@@ -1,9 +1,21 @@
-import "scl.h"
+/*
+Herve Ingende
+Jacob Dangler
+Erwin Joubert
+
+CS4308: Concept of Programming Languages
+Section W01
+1st Project Deliverable
+March 3rd, 2020
+*/
+
 // import "basic_lib.h"
 /* Program: arrayex1.scl
    Computes the maximum value in an array.
    J Garrido Updated 1-7-2016
-*/    
+*/   
+
+import "scl.h"
 symbol MM 45
 
 forward declarations
