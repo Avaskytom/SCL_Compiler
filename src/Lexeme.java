@@ -1,3 +1,14 @@
+/*
+Herve Ingende
+Jacob Dangler
+Erwin Joubert
+
+CS4308: Concept of Programming Languages
+Section W01
+1st Project Deliverable
+March 3rd, 2020
+*/
+
 public class Lexeme {
     private LexemeType lexType;
     private String lexeme;
