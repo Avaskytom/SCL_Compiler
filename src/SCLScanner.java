@@ -1,3 +1,13 @@
+/*
+Herve Ingende
+Jacob Dangler
+Erwin Joubert
+
+CS4308: Concept of Programming Languages
+Section W01
+1st Project Deliverable
+March 3rd, 2020
+*/
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
