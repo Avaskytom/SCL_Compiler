@@ -1,3 +1,13 @@
+/*
+Herve Ingende
+Jacob Dangler
+Erwin Joubert
+
+CS4308: Concept of Programming Languages
+Section W01
+1st Project Deliverable
+March 3rd, 2020
+*/
 public enum LexemeType {
     keyword, // Word, no quotes, numbers, more than length 1 (import, function, is, define, type, display)
     string_literal, // String in quotes ("scl.h", "Welcome to the world of SCL", "Value of x: ")
