@@ -10,13 +10,18 @@ March 3rd, 2020
 */
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class SCLScanner {
     private List<Lexeme> lexemes;
     private List<String> identifiers = new ArrayList<>();
     private String prevLex = "";
+
+    // Keywords for the subset of SCL
+    private Set<String> keywords = new HashSet<>(Arrays.asList("specifications", "symbol", "forward", "references",
+            "function", "pointer", "array", "type", "struct", "integer", "enum", "global", "declarations",
+            "implementations", "main", "parameters", "constant", "begin", "endfun", "if", "then", "else",
+            "endif", "repeat", "until", "endrepeat", "display", "set", "return"));
 
     // All lexemes will be categorized and listed
     public SCLScanner(String fileName) throws FileNotFoundException {
@@ -83,7 +88,7 @@ public class SCLScanner {
     // Method that returns lexeme type
     private LexemeType getLexemeType(String lexeme, int lineNum, int colNum) {
         assert lexeme != null;
-        LexemeType lt = LexemeType.keyword;
+        LexemeType lt = LexemeType.token;
 
         if (lexeme.charAt(0) == '"' && (lexeme.charAt(lexeme.length() - 1) == '"' || lexeme.charAt(lexeme.length() - 2) == '"')) {
             // Check for string literal
@@ -122,6 +127,9 @@ public class SCLScanner {
                     || (lexeme.length() >= 2 && lexeme.substring(0, 2).equals("/*") || lexeme.substring(lexeme.length() - 2).equals("*/")))) {
                 // Check for comments
                 lt = LexemeType.comment;
+            } else if(keywords.contains(lexeme)){
+                // Check if keyword
+                lt = LexemeType.keyword;
             }
         }
 
