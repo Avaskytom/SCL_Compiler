@@ -21,6 +21,8 @@ public class ScannerTest {
             String scl = "src/sclex1.scl";
 
             System.out.println("Start reading to scan file: " + scl + "\n");
+
+            // Create a scanner using the input file
             SCLScanner sc = new SCLScanner(scl);
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());

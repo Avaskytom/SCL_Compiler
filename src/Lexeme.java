@@ -9,13 +9,19 @@ Section W01
 March 3rd, 2020
 */
 
+// Implementation of the Lexeme class
 public class Lexeme {
     private LexemeType lexType;
     private String lexeme;
     private int lineNum;
     private int colNum;
 
+    /*
+     * Constructor
+     * Each Lexeme holds its type (keyword, string_literal, etc), Its word value, and location in  the input file
+     */
     public Lexeme(LexemeType lexType, String lexeme, int lineNum, int colNum) {
+        // Make sure parameters are valid and set values
         if (lexType == null)
             throw new IllegalArgumentException("Null lexeme type argument");
 
@@ -37,6 +43,7 @@ public class Lexeme {
         this.colNum = colNum;
     }
 
+    // Getter methods
     public LexemeType getLexemeType() {
         return lexType;
     }

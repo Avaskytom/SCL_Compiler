@@ -28,7 +28,9 @@ public class SCLScanner {
         File f = new File(fileName);
         java.util.Scanner input = new java.util.Scanner(f);
 
+        // For ever line of the file
         while (input.hasNext()) {
+            // Get the line and remove leading and trailing whitespace
             String line = input.nextLine().trim();
 
             // check for multi-line comments
@@ -42,6 +44,7 @@ public class SCLScanner {
                     line = input.nextLine().trim();
                     System.out.printf("Line: %-14dComment%n", lineNum);
 
+                    // Return to normal when closing comment is reached
                     if (line.length() >= 2 && line.charAt(line.length() - 2) == '*' && line.charAt(line.length() - 1) == '/') {
                         break;
                     }
@@ -63,9 +66,11 @@ public class SCLScanner {
         assert index >= 0;
         index = skipWhiteSpace(line, index);
 
+        // Loop through every word
         while (index < line.length()) {
             String lexeme = getLexeme(line, index);
 
+            // Add lexeme to lexemes array and move on to next word
             LexemeType lexType = getLexemeType(lexeme, lineNum, index + 1);
             lexemes.add(new Lexeme(lexType, lexeme, lineNum, index + 1));
             index += lexeme.length();
@@ -75,35 +80,47 @@ public class SCLScanner {
         }
     }
 
+    // Method that returns lexeme type
     private LexemeType getLexemeType(String lexeme, int lineNum, int colNum) {
         assert lexeme != null;
         LexemeType lt = LexemeType.keyword;
 
         if (lexeme.charAt(0) == '"' && (lexeme.charAt(lexeme.length() - 1) == '"' || lexeme.charAt(lexeme.length() - 2) == '"')) {
+            // Check for string literal
             lt = LexemeType.string_literal;
         } else if (prevLex.equals("define") || identifiers.contains(lexeme)) {
+            // Check for identifier
             lt = LexemeType.identifier;
             identifiers.add(lexeme);
         } else if (lexeme.equals("=")) {
+            // Check for assignment operator
             lt = LexemeType.assignment_op;
         } else {
             if (Character.isDigit(lexeme.charAt(0)) && Character.isDigit(lexeme.charAt(lexeme.length() - 1))) {
+                // Check if lexeme is a number
                 if (Double.parseDouble(lexeme) % 1 == 0) {
+                    // Check if  integer
                     lt = LexemeType.integer_constant;
                 } else {
+                    // Check if real
                     lt = LexemeType.real_constant;
                 }
             } else if ((lexeme.charAt(0) == '+' || lexeme.charAt(0) == '-') && Character.isDigit(lexeme.charAt(lexeme.length() - 1))) {
+                // Handle signed numbers
                 if (Double.parseDouble(lexeme) % 1 == 0) {
+                    // Check if  integer
                     lt = LexemeType.signed_integer_constant;
                 } else {
+                    // Check if real
                     lt = LexemeType.signed_real_constant;
                 }
             } else if (lexeme.equals("==") || lexeme.equals("!=") || lexeme.equals("<") || lexeme.equals("<=")
                     || lexeme.equals(">") || lexeme.equals(">=")) {
+                // Check equality symbols
                 lt = LexemeType.relational_operator;
             } else if (lexeme.length() >= 2 && (lexeme.substring(0, Math.min(lexeme.length(), 2)).equals("//")
                     || (lexeme.length() >= 2 && lexeme.substring(0, 2).equals("/*") || lexeme.substring(lexeme.length() - 2).equals("*/")))) {
+                // Check for comments
                 lt = LexemeType.comment;
             }
         }
@@ -112,11 +129,13 @@ public class SCLScanner {
         return lt;
     }
 
+    // Returns index of next word in a sentence
     private int skipWhiteSpace(String line, int index) {
         assert line != null;
         assert index >= 0;
         int current = index;
 
+        // Go from current index to an index where current character isn't whitespace
         while (current < line.length() && Character.isWhitespace(line.charAt(current)))
             current++;
 
