@@ -8,6 +8,7 @@ Section W01
 1st Project Deliverable
 March 3rd, 2020
 */
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -18,10 +19,9 @@ public class SCLScanner {
     private String prevLex = "";
 
     // Keywords for the subset of SCL
-    private Set<String> keywords = new HashSet<>(Arrays.asList("specifications", "symbol", "forward", "references",
-            "function", "pointer", "array", "type", "struct", "integer", "enum", "global", "declarations",
-            "implementations", "main", "parameters", "constant", "begin", "endfun", "if", "then", "else",
-            "endif", "repeat", "until", "endrepeat", "display", "set", "return"));
+    private Set<String> keywords = new HashSet<>(Arrays.asList("array", "begin", "define", "display", "endfun",
+            "endif", "endwhile", "forward", "function", "global", "if", "implementations", "import", "input",
+            "integer", "is", "return", "set", "symbol", "then", "type", "while"));
 
     // All lexemes will be categorized and listed
     public SCLScanner(String fileName) throws FileNotFoundException {
@@ -37,25 +37,6 @@ public class SCLScanner {
         while (input.hasNext()) {
             // Get the line and remove leading and trailing whitespace
             String line = input.nextLine().trim();
-
-            // check for multi-line comments
-            if (line.length() >= 2 && (line.charAt(0) == '/' && line.charAt(1) == '*') && (line.charAt(line.length() - 2) != '*' && line.charAt(line.length() - 1) != '/') || line.equals("description")) {
-                // Handle multi-line comment symbol
-                processLine(line, lineNum, 0);
-
-                // Ignore content of multi-line comments
-                while (true) {
-                    lineNum++;
-                    line = input.nextLine().trim();
-                    System.out.printf("Line: %-14dComment%n", lineNum);
-
-                    // Return to normal when closing comment is reached
-                    if (line.length() >= 2 && line.charAt(line.length() - 2) == '*' && line.charAt(line.length() - 1) == '/') {
-                        break;
-                    }
-                }
-            }
-
             processLine(line, lineNum, 0);
             lineNum++;
         }
@@ -101,7 +82,9 @@ public class SCLScanner {
             // Check for assignment operator
             lt = LexemeType.assignment_op;
         } else {
-            if (Character.isDigit(lexeme.charAt(0)) && Character.isDigit(lexeme.charAt(lexeme.length() - 1))) {
+            boolean digit = Character.isDigit(lexeme.charAt(lexeme.length() - 1));
+
+            if (Character.isDigit(lexeme.charAt(0)) && digit) {
                 // Check if lexeme is a number
                 if (Double.parseDouble(lexeme) % 1 == 0) {
                     // Check if  integer
@@ -110,7 +93,7 @@ public class SCLScanner {
                     // Check if real
                     lt = LexemeType.real_constant;
                 }
-            } else if ((lexeme.charAt(0) == '+' || lexeme.charAt(0) == '-') && Character.isDigit(lexeme.charAt(lexeme.length() - 1))) {
+            } else if ((lexeme.charAt(0) == '+' || lexeme.charAt(0) == '-') && digit) {
                 // Handle signed numbers
                 if (Double.parseDouble(lexeme) % 1 == 0) {
                     // Check if  integer
@@ -123,11 +106,10 @@ public class SCLScanner {
                     || lexeme.equals(">") || lexeme.equals(">=")) {
                 // Check equality symbols
                 lt = LexemeType.relational_operator;
-            } else if (lexeme.length() >= 2 && (lexeme.substring(0, Math.min(lexeme.length(), 2)).equals("//")
-                    || (lexeme.length() >= 2 && lexeme.substring(0, 2).equals("/*") || lexeme.substring(lexeme.length() - 2).equals("*/")))) {
+            } else if (lexeme.length() >= 2 && (lexeme.substring(0, Math.min(lexeme.length(), 2)).equals("//"))) {
                 // Check for comments
                 lt = LexemeType.comment;
-            } else if(keywords.contains(lexeme)){
+            } else if (keywords.contains(lexeme)) {
                 // Check if keyword
                 lt = LexemeType.keyword;
             }
