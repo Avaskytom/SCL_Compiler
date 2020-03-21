@@ -18,7 +18,7 @@ public class ScannerTest {
             /*  Both files scanned and displayed successfully
                 Please place filepath to file as String scl if
                 path isn't found */
-            String scl = "src/sclex1.scl";
+            String scl = "src/welcome.scl";
 
             System.out.println("Start reading to scan file: " + scl + "\n");
 
