@@ -1,12 +1,15 @@
 <implementations>	::= implementations <func_list>
 <func_list>			::= <func_list> <func_def> | <func_def>
 <func_def>			::= function IDENTIFIER is <var_list> begin <statement> endfun IDENTIFIER
+<var_begin>			::= variables <var_list>
 <var_list>			::= <var_list> <variable> | <variable>
 <variable>			::= define IDENTIFIER of type <data_type>
 <statement>			::= <statement> <action> | <statement>
-<action>			::= <set_action> | <display_action> | <input_action>
+<action>			::= <set_action> | <display_action> | <input_action> | <return_action>
 <set_action>		::= set IDENTIFIER = <expr>
 <display_action>	::= display IDENTIFIER | display STRING_LITERAL, IDENTIFIER
 <input_action>		::= input STRING_LITERAL, IDENTIFIER
-<expr>				::= <expr> + <term> | <expr> - <term> | <expr> * <term> | <expr> / <term>
+<return_action>		::= return <expr>
+<expr>				::= term
 <term>				::= IDENTIFIER | REAL_CONSTANT | INTEGER_CONSTANT
+<data_type>			::= integer | double | real

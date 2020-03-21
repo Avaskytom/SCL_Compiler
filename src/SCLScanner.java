@@ -41,6 +41,7 @@ public class SCLScanner {
             lineNum++;
         }
 
+        lexemes.add(new Lexeme(LexemeType.eof, "EOF", lineNum, 1));
         input.close();
         System.out.println("\nEnd of input file");
     }
@@ -58,6 +59,12 @@ public class SCLScanner {
 
             // Add lexeme to lexemes array and move on to next word
             LexemeType lexType = getLexemeType(lexeme, lineNum, index + 1);
+
+            // skip commas after strings, ex: display "The value of t is: ", t
+            if(lexType == LexemeType.string_literal && lexeme.charAt(lexeme.length() - 1) == ',') {
+                lexeme = lexeme.substring(0, lexeme.length() - 1);
+            }
+
             lexemes.add(new Lexeme(lexType, lexeme, lineNum, index + 1));
             index += lexeme.length();
             System.out.printf("Line: %-3d Col: %-3d\tSymbol: %-25s Lexeme: %s%n", lineNum, index, lexType, lexeme);
@@ -78,6 +85,9 @@ public class SCLScanner {
             // Check for identifier
             lt = LexemeType.identifier;
             identifiers.add(lexeme);
+        } else if (lexeme.equals(",")) {
+            // Check for comma
+            lt = LexemeType.comma;
         } else if (lexeme.equals("=")) {
             // Check for assignment operator
             lt = LexemeType.assignment_op;
@@ -160,4 +170,7 @@ public class SCLScanner {
         return line.substring(index, location);
     }
 
+    public List<Lexeme> getLexemes() {
+        return lexemes;
+    }
 }

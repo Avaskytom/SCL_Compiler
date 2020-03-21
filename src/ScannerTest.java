@@ -24,6 +24,8 @@ public class ScannerTest {
 
             // Create a scanner using the input file
             SCLScanner sc = new SCLScanner(scl);
+            System.out.println();
+            Parser parser = new Parser(sc.getLexemes());
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }

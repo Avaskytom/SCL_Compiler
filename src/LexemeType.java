@@ -20,5 +20,8 @@ public enum LexemeType {
     integer_constant,       // Ints
     signed_integer_constant,
     signed_real_constant,
-    comment                 // Comments following forward slashes
+    comment,                 // Comments following forward slashes
+    comma,                  // comma
+    eof,                    // end of file
+
 }

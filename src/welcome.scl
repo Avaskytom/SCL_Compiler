@@ -3,7 +3,7 @@
 // Description : Display welcome message on the screen and the value of variable x.
 
 implementations
-function  main is
+function main is
 variables
     define x of type double   // a variable declaration
 	define t of type double   // time of the second event
